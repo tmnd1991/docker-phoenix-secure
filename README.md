@@ -6,14 +6,21 @@ to provide an SQL interface.
 
 Apache Phoenix is a SQL skin over HBase delivered as a client-embedded JDBC driver targeting low latency queries over HBase data. Apache Phoenix takes your SQL query, compiles it into a series of HBase scans, and orchestrates the running of those scans to produce regular JDBC result sets. The table metadata is stored in an HBase table and versioned, such that snapshot queries over prior versions will automatically use the correct schema. Direct use of the HBase API, along with coprocessors and custom filters, results in performance on the order of milliseconds for small queries, or seconds for tens of millions of rows.
 
+
+
 ###Versions
 Apache Hadoop - 2.7.0  
-Apache HBase - 1.1.2
-Apache Phoenix - 4.4.0+
+Apache Zookeeper - 3.4.6
+Apache HBase - 1.1.8
+Apache Phoenix - 4.9.0
 
-###Launch
-`docker run -it sequenceiq/phoenix:v4.1onHbase-0.98.5` -> to normal launch
+###Prerequisites
+* Download Zookeeper: http://mirror.csclub.uwaterloo.ca/apache/zookeeper/zookeeper-$3.4.6/zookeeper-3.4.6.tar.gz
+* Download HBase: http://apache.mirror.gtcomm.net/hbase/1.1.8/hbase-1.1.8-bin.tar.gz
+* Download Phoenix: http://apache.mirror.vexxhost.com/phoenix/apache-phoenix-4.9.0-HBase-1.1/bin/apache-phoenix-4.9.0-HBase-1.1-bin.tar.gz
 
-###Alternative launch
-`docker run -it sequenceiq/phoenix:v4.1onHbase-0.98.5 /etc/bootstrap-phoenix.sh -sqlline` -> to launch directly the sqlline for phoenix
+###Build
+`docker build -t Knappek/phoenix-local .`
 
+###launch
+`docker run -dit --name phoenix knappek/phoenix-local -d`
