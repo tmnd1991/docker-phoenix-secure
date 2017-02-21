@@ -10,7 +10,7 @@ rm /tmp/*.pid
 # installing libraries if any - (resource urls added comma separated to the ACP system variable)
 cd $HADOOP_PREFIX/share/hadoop/common ; for cp in ${ACP//,/ }; do  echo == $cp; curl -LO $cp ; done; cd -
 
-sed -i 's/YOUR-REALM.COM/${KRB_REALM}/g' $HBASE_HOME/conf/hbase-site.xml
+sed -i "s/YOUR-REALM.COM/${KRB_REALM}/g" $HBASE_HOME/conf/hbase-site.xml
 
 
 echo "test" >> /tmp/test.txt
