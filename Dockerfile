@@ -37,10 +37,9 @@ RUN cp $PHOENIX_HOME/phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-server.jar $HBA
 ADD bootstrap-phoenix.sh /etc/bootstrap-phoenix.sh
 RUN chown root:root /etc/bootstrap-phoenix.sh
 RUN chmod 700 /etc/bootstrap-phoenix.sh
-ENV KRB_REALM CMD-REALM.COM
-CMD ["$ZOOKEEPER_VERSION", "$HBASE_HOME", "$KRB_REALM"]
+ENV KRB_REALM DOCKERFILE_REALM
+
 ENTRYPOINT ["/etc/bootstrap-phoenix.sh"]
-
-
+CMD ["-d"]
 
 EXPOSE 8765
