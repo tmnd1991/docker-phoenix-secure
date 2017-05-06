@@ -8,7 +8,9 @@ rm /tmp/*.pid
 cd $HADOOP_PREFIX/share/hadoop/common ; for cp in ${ACP//,/ }; do  echo == $cp; curl -LO $cp ; done; cd -
 
 # replace values with environment variables
-sed -i "s/YOUR-REALM.COM/${KRB_REALM}/g" $HBASE_HOME/conf/hbase-site.xml
+sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" $HBASE_HOME/conf/hbase-site.xml
+sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" /etc/krb5.conf
+sed -i "s/example.com/${DOMAIN_REALM}/g" /etc/krb5.conf
 
 service sshd start
 $HADOOP_PREFIX/sbin/start-dfs.sh

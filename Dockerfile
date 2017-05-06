@@ -33,12 +33,15 @@ ENV PATH $PATH:$PHOENIX_HOME/bin
 RUN cp $PHOENIX_HOME/phoenix-core-$PHOENIX_VERSION-HBase-$HBASE_MAJOR.jar $HBASE_HOME/lib/phoenix.jar
 RUN cp $PHOENIX_HOME/phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-server.jar $HBASE_HOME/lib/phoenix-server.jar
 
+# Kerberos client
+RUN yum install krb5-libs krb5-workstation krb5-auth-dialog -y
+
 # bootstrap phoenix
 ADD bootstrap-phoenix.sh /etc/bootstrap-phoenix.sh
 RUN chown root:root /etc/bootstrap-phoenix.sh
 RUN chmod 700 /etc/bootstrap-phoenix.sh
-ENV KRB_REALM DOCKERFILE_REALM
-
+ENV KRB_REALM EXAMPLE.COM
+ENV DOMAIN_REALM example.com
 ENTRYPOINT ["/etc/bootstrap-phoenix.sh"]
 CMD ["-d"]
 
