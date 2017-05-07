@@ -12,6 +12,13 @@ sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" $HBASE_HOME/conf/hbase-site.xml
 sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" /etc/krb5.conf
 sed -i "s/example.com/${DOMAIN_REALM}/g" /etc/krb5.conf
 
+kadmin -p admin/admin -w admin -q "addprinc -randkey hbase/$(hostname -f)@${KRB_REALM}"
+kadmin -p admin/admin -w admin -q "xst -k hbase.keytab hbase/$(hostname -f)"
+mkdir -p /etc/security/keytabs
+mv hbase.keytab /etc/security/keytabs
+chown hbase:hbase /etc/security/keytabs
+chmod 400 /etc/security/keytabs
+
 service sshd start
 $HADOOP_PREFIX/sbin/start-dfs.sh
 $HADOOP_PREFIX/sbin/start-yarn.sh
