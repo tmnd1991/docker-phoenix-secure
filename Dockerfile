@@ -33,15 +33,23 @@ ENV PATH $PATH:$PHOENIX_HOME/bin
 RUN cp $PHOENIX_HOME/phoenix-core-$PHOENIX_VERSION-HBase-$HBASE_MAJOR.jar $HBASE_HOME/lib/phoenix.jar
 RUN cp $PHOENIX_HOME/phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-server.jar $HBASE_HOME/lib/phoenix-server.jar
 
-# Kerberos client
+# Kerberos
 RUN yum install krb5-libs krb5-workstation krb5-auth-dialog -y
+COPY jaas.conf $ZOO_HOME/conf/jaas.conf
+COPY java.env $ZOO_HOME/conf/java.env
+
+# default environment variables
+ENV KRB_REALM EXAMPLE.COM
+ENV DOMAIN_REALM example.com
+ENV KERBEROS_ADMIN admin/admin
+ENV KERBEROS_ADMIN_PASSWORD admin
+ENV HBASE_KEYTAB_FILE /etc/security/keytabs/hbase.keytab
+ENV ZOOKEEPER_KEYTAB_FILE /etc/security/keytabs/zookeeper.keytab
 
 # bootstrap phoenix
 ADD bootstrap-phoenix.sh /etc/bootstrap-phoenix.sh
 RUN chown root:root /etc/bootstrap-phoenix.sh
 RUN chmod 700 /etc/bootstrap-phoenix.sh
-ENV KRB_REALM EXAMPLE.COM
-ENV DOMAIN_REALM example.com
 ENTRYPOINT ["/etc/bootstrap-phoenix.sh"]
 CMD ["-d"]
 

@@ -9,15 +9,31 @@ cd $HADOOP_PREFIX/share/hadoop/common ; for cp in ${ACP//,/ }; do  echo == $cp; 
 
 # replace values with environment variables
 sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" $HBASE_HOME/conf/hbase-site.xml
+sed -i "s#/etc/security/keytabs/hbase.keytab#${HBASE_KEYTAB_FILE}#g" $HBASE_HOME/conf/hbase-site.xml
 sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" /etc/krb5.conf
 sed -i "s/example.com/${DOMAIN_REALM}/g" /etc/krb5.conf
+echo "
+authProvider.1=org.apache.zookeeper.server.auth.SASLAuthenticationProvider
+jaasLoginRenew=3600000
+" >> $ZOO_HOME-$ZOOKEEPER_VERSION/conf/zoo.cfg
+sed -i "s/fully.qualified.domain.name/$(hostname -f)/g" $ZOO_HOME/conf/jaas.conf
+sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" $ZOO_HOME/conf/jaas.conf
+sed -i "s#/etc/security/keytabs/zookeeper.keytab#${ZOOKEEPER_KEYTAB_FILE}#g" $ZOO_HOME/conf/jaas.conf
+sed -i "s#/etc/zookeeper/conf/jaas.conf#$ZOO_HOME/conf/jaas.conf#g" $ZOO_HOME/conf/java.env
 
-kadmin -p admin/admin -w admin -q "addprinc -randkey hbase/$(hostname -f)@${KRB_REALM}"
-kadmin -p admin/admin -w admin -q "xst -k hbase.keytab hbase/$(hostname -f)"
+# create hbase kerberos principal and keytab
+kadmin -p ${KERBEROS_ADMIN} -w ${KERBEROS_ADMIN_PASSWORD} -q "addprinc -randkey hbase/$(hostname -f)@${KRB_REALM}"
+kadmin -p ${KERBEROS_ADMIN} -w ${KERBEROS_ADMIN_PASSWORD} -q "xst -k hbase.keytab hbase/$(hostname -f)"
 mkdir -p /etc/security/keytabs
 mv hbase.keytab /etc/security/keytabs
-chown hbase:hbase /etc/security/keytabs
-chmod 400 /etc/security/keytabs
+chmod 400 /etc/security/keytabs/hbase.keytab
+
+# create zookeeper principal and keytab
+kadmin -p ${KERBEROS_ADMIN} -w ${KERBEROS_ADMIN_PASSWORD} -q "addprinc -randkey zookeeper/$(hostname -f)@${KRB_REALM}"
+kadmin -p ${KERBEROS_ADMIN} -w ${KERBEROS_ADMIN_PASSWORD} -q "xst -k zookeeper.keytab zookeeper/$(hostname -f)"
+mkdir -p /etc/security/keytabs
+mv zookeeper.keytab /etc/security/keytabs
+chmod 400 /etc/security/keytabs/zookeeper.keytab
 
 service sshd start
 $HADOOP_PREFIX/sbin/start-dfs.sh
