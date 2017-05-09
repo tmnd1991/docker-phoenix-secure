@@ -37,6 +37,12 @@ RUN cp $PHOENIX_HOME/phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-server.jar $HBA
 COPY zk-jaas.conf $HBASE_HOME/conf/zk-jaas.conf
 COPY hbase-env.sh $HBASE_HOME/conf/hbase-env.sh
 
+# Kerberos Phoenix
+RUN ln -sf $HBASE_HOME/conf/hbase-site.xml $PHOENIX_HOME/bin/hbase-site.xml
+RUN ln -sf /usr/local/hadoop-2.7.0/etc/hadoop/core-site.xml $PHOENIX_HOME/bin/core-site.xml
+RUN ln -sf /usr/local/hadoop-2.7.0/etc/hadoop/hdfs-site.xml $PHOENIX_HOME/bin/hdfs-site.xml
+
+
 # Kerberos Zookeeper
 RUN yum install krb5-libs krb5-workstation krb5-auth-dialog -y
 COPY jaas.conf $ZOO_HOME/conf/jaas.conf
