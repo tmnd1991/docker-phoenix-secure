@@ -8,16 +8,17 @@ rm /tmp/*.pid
 cd $HADOOP_PREFIX/share/hadoop/common ; for cp in ${ACP//,/ }; do  echo == $cp; curl -LO $cp ; done; cd -
 
 # replace values with environment variables
-# HBase with kerberos enabled
-sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" $HBASE_HOME/conf/hbase-site.xml
-sed -i "s#/etc/security/keytabs/hbase.keytab#${HBASE_KEYTAB_FILE}#g" $HBASE_HOME/conf/hbase-site.xml
+# kerberos client
 sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" /etc/krb5.conf
 sed -i "s/example.com/${DOMAIN_REALM}/g" /etc/krb5.conf
+
+# hbase kerberos
+sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" $HBASE_HOME/conf/hbase-site.xml
+sed -i "s#/etc/security/keytabs/hbase.keytab#${HBASE_KEYTAB_FILE}#g" $HBASE_HOME/conf/hbase-site.xml
 sed -i "s#/etc/security/keytabs/hbase.keytab#${HBASE_KEYTAB_FILE}#g" $HBASE_HOME/conf/zk-jaas.conf
 sed -i "s#/etc/hbase/conf/hbase-env.sh#${HBASE_HOME}/conf/hbase-env.sh#g" $HBASE_HOME/conf/hbase-env.sh
 
-
-# Zookeeper with Kerberos enabled
+# zookeeper kerberos
 sed -i "s/fully.qualified.domain.name/$(hostname -f)/g" $ZOO_HOME/conf/jaas.conf
 sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" $ZOO_HOME/conf/jaas.conf
 sed -i "s#/etc/security/keytabs/zookeeper.keytab#${ZOOKEEPER_KEYTAB_FILE}#g" $ZOO_HOME/conf/jaas.conf
