@@ -1,5 +1,7 @@
-docker-phoenix
-==============
+# STILL IN DEVELOPMENT - NOT YET WORKING !!!
+
+docker-phoenix-secure
+=====================
 
 THIS IS WORK IN PROGRESS
 
@@ -24,7 +26,7 @@ Apache Phoenix - 4.9.0
 * Download Phoenix: http://apache.mirror.vexxhost.com/phoenix/apache-phoenix-4.9.0-HBase-1.1/bin/apache-phoenix-4.9.0-HBase-1.1-bin.tar.gz
 
 ### Build
-`docker build -t Knappek/phoenix-local .`
+`docker build -t Knappek/phoenix-secure .`
 
 ### launch
-`docker run -dit --name phoenix -e KRB_REALM=YOUR_REALM knappek/phoenix-local -d`
+`docker run -dit --name phoenix -e KRB_REALM=YOUR_REALM knappek/phoenix-secure -d`
