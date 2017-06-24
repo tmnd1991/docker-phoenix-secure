@@ -3,7 +3,7 @@ MAINTAINER knappek
 
 # zookeeper
 ENV ZOOKEEPER_VERSION 3.4.6
-COPY zookeeper-$ZOOKEEPER_VERSION.tar.gz /usr/local/zookeeper-$ZOOKEEPER_VERSION.tar.gz
+COPY local_files/zookeeper-$ZOOKEEPER_VERSION.tar.gz /usr/local/zookeeper-$ZOOKEEPER_VERSION.tar.gz
 RUN tar -xzvf /usr/local/zookeeper-$ZOOKEEPER_VERSION.tar.gz -C /usr/local/
 RUN cd /usr/local && ln -s ./zookeeper-$ZOOKEEPER_VERSION zookeeper
 ENV ZOO_HOME /usr/local/zookeeper
@@ -15,17 +15,17 @@ RUN mkdir /tmp/zookeeper
 ENV HBASE_MAJOR 1.1
 ENV HBASE_MINOR 8
 ENV HBASE_VERSION "${HBASE_MAJOR}.${HBASE_MINOR}"
-COPY hbase-$HBASE_VERSION-bin.tar.gz /usr/local/hbase-$HBASE_VERSION-bin.tar.gz
+COPY local_files/hbase-$HBASE_VERSION-bin.tar.gz /usr/local/hbase-$HBASE_VERSION-bin.tar.gz
 RUN tar -xzvf /usr/local/hbase-$HBASE_VERSION-bin.tar.gz -C /usr/local
 RUN cd /usr/local && ln -s ./hbase-$HBASE_VERSION hbase
 ENV HBASE_HOME /usr/local/hbase
 ENV PATH $PATH:$HBASE_HOME/bin
 RUN rm $HBASE_HOME/conf/hbase-site.xml
-ADD hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
+COPY config_files/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
 
 # phoenix
 ENV PHOENIX_VERSION 4.9.0
-COPY apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz /usr/local/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz
+COPY local_files/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz /usr/local/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz
 RUN tar -xzvf /usr/local/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz -C /usr/local
 RUN cd /usr/local && ln -s ./apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin phoenix
 ENV PHOENIX_HOME /usr/local/phoenix
@@ -39,9 +39,9 @@ RUN mkdir -p /var/log/kerberos
 RUN touch /var/log/kerberos/kadmind.log
 
 # Kerberos HBase
-COPY hbase-server.jaas $HBASE_HOME/conf/hbase-server.jaas
-COPY hbase-client.jaas $HBASE_HOME/conf/hbase-client.jaas
-COPY hbase-env.sh $HBASE_HOME/conf/hbase-env.sh
+COPY config_files/hbase-server.jaas $HBASE_HOME/conf/hbase-server.jaas
+COPY config_files/hbase-client.jaas $HBASE_HOME/conf/hbase-client.jaas
+COPY config_files/hbase-env.sh $HBASE_HOME/conf/hbase-env.sh
 RUN mkdir -p /apps/hbase/staging && chmod 711 /apps/hbase/staging
 
 # Kerberos Phoenix
@@ -50,10 +50,10 @@ RUN ln -sf /usr/local/hadoop/etc/hadoop/core-site.xml $PHOENIX_HOME/bin/core-sit
 RUN ln -sf /usr/local/hadoop/etc/hadoop/hdfs-site.xml $PHOENIX_HOME/bin/hdfs-site.xml
 
 # Kerberos Zookeeper
-COPY zookeeper-server.jaas $ZOO_HOME/conf/zookeeper-server.jaas
-COPY zookeeper-client.jaas $ZOO_HOME/conf/zookeeper-client.jaas
-COPY zookeeper-env.sh $ZOO_HOME/conf/zookeeper-env.sh
-COPY zoo.cfg $ZOO_HOME/conf/zoo.cfg
+COPY config_files/zookeeper-server.jaas $ZOO_HOME/conf/zookeeper-server.jaas
+COPY config_files/zookeeper-client.jaas $ZOO_HOME/conf/zookeeper-client.jaas
+COPY config_files/zookeeper-env.sh $ZOO_HOME/conf/zookeeper-env.sh
+COPY config_files/zoo.cfg $ZOO_HOME/conf/zoo.cfg
 
 # hadoop env variables
 ENV HADOOP_PREFIX /usr/local/hadoop
@@ -73,6 +73,7 @@ ENV FQDN hadoop.com
 
 # bootstrap phoenix
 ADD bootstrap-phoenix.sh /etc/bootstrap-phoenix.sh
+
 RUN chown root:root /etc/bootstrap-phoenix.sh
 RUN chmod 700 /etc/bootstrap-phoenix.sh
 ENTRYPOINT ["/etc/bootstrap-phoenix.sh"]
