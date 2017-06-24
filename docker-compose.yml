@@ -1,0 +1,45 @@
+version: '2'
+
+networks:
+  custom:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.21.0.0/16
+        gateway: 172.21.0.1
+
+services:
+  kdc:
+    networks:
+      custom:
+        ipv4_address: 172.21.0.2
+    image: sequenceiq/kerberos
+    hostname: kdc.kerberos.com
+    environment:
+      REALM: EXAMPLE.COM
+      DOMAIN_REALM: kdc.kerberos.com
+    volumes:
+      - "./config_files/krb5.conf:/etc/krb5.conf"
+      - "/dev/urandom:/dev/random"
+      - "/etc/localtime:/etc/localtime:ro"
+
+  phoenix-secure:
+    networks:
+      custom:
+        ipv4_address: 172.21.0.3
+    image: knappek/phoenix-secure
+    depends_on: 
+      - kdc
+    hostname: phoenix
+    domainname: docker.com
+    tty: true
+    extra_hosts:
+      - "kdc.kerberos.com kdc:172.21.0.2"
+    environment:
+      KRB_REALM: EXAMPLE.COM
+      DOMAIN_REALM: kdc.kerberos.com
+      FQDN: phoenix.docker.com
+    volumes:
+      - "./config_files/krb5.conf:/etc/krb5.conf"
+      - "/etc/localtime:/etc/localtime:ro"

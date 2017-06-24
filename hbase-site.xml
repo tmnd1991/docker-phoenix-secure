@@ -34,11 +34,7 @@
     <value>true</value>
   </property>
   <property>
-    <name>hbase.regionserver.kerberos.principal</name>
-    <value>hbase/_HOST@EXAMPLE.COM</value>
-  </property>
-  <property>
-    <name>hbase.regionserver.keytab.file</name>
+    <name>hbase.master.keytab.file</name>
     <value>/etc/security/keytabs/hbase.keytab</value>
   </property>
   <property>
@@ -46,19 +42,61 @@
     <value>hbase/_HOST@EXAMPLE.COM</value>
   </property>
   <property>
-    <name>hbase.master.keytab.file</name>
+    <name>hbase.regionserver.keytab.file</name>
     <value>/etc/security/keytabs/hbase.keytab</value>
   </property>
   <property>
+    <name>hbase.regionserver.kerberos.principal</name>
+    <value>hbase/_HOST@EXAMPLE.COM</value>
+  </property>
+  <property>
+    <name>hbase.superuser</name>
+    <value>root</value>
+  </property>
+  <property>    
+    <name>hbase.coprocessor.region.classes</name>    
+    <value>org.apache.hadoop.hbase.security.token.TokenProvider,org.apache.hadoop.hbase.security.access.SecureBulkLoadEndpoint,org.apache.hadoop.hbase.security.access.AccessController </value>    
+    <description>A comma-separated list of Coprocessors that are loaded by default on all tables.</description>  
+  </property> 
+  <property>
     <name>hbase.security.authentication</name>
     <value>kerberos</value>
+  </property>
+  <property>
+    <name>hbase.rpc.engine</name>
+    <value>org.apache.hadoop.hbase.ipc.SecureRpcEngine</value>
   </property>
   <property>
     <name>hbase.security.authorization</name>
     <value>false</value>
   </property>
   <property>
-  <name>hbase.coprocessor.region.classes</name>
+    <name>hbase.coprocessor.master.classes</name>
+    <value>org.apache.hadoop.hbase.security.access.AccessController</value>
+  </property>
+  <property>
+    <name>hbase.bulkload.staging.dir</name>
+    <value>/apps/hbase/staging</value>
+    <description>Directory in the default filesystem, owned by the hbase user, and has permissions(-rwx--x--x, 711)</description>
+  </property>
+  <property>
+    <name>hbase.coprocessor.region.classes</name>
     <value>org.apache.hadoop.hbase.security.token.TokenProvider</value>
+  </property>
+
+  <property>
+    <name>phoenix.queryserver.kerberos.principal</name>
+    <value>HTTP/_HOST@EXAMPLE.COM</value>
+    <description>The Kerberos principal name that should be used to run the Phoenix Query Server process.
+    The principal name should be in the form: user/hostname@DOMAIN.  If "_HOST" is used as the hostname
+    portion, it will be replaced with the actual hostname of the running instance.
+    </description>
+  </property>
+  <property>
+    <name>phoenix.queryserver.kerberos.keytab</name>
+    <value>/etc/security/keytabs/spnego.service.keytab</value>
+    <description>Full path to the Kerberos keytab file to use for logging
+    in the configured Phoenix Query Server service principal.
+    </description>
   </property>
 </configuration>

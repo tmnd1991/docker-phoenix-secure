@@ -1,5 +1,5 @@
-FROM sequenceiq/hadoop-docker:2.7.0
-MAINTAINER SequenceIQ
+FROM knappek/hadoop-secure:2.7.1
+MAINTAINER knappek
 
 # zookeeper
 ENV ZOOKEEPER_VERSION 3.4.6
@@ -34,29 +34,42 @@ RUN cp $PHOENIX_HOME/phoenix-core-$PHOENIX_VERSION-HBase-$HBASE_MAJOR.jar $HBASE
 RUN cp $PHOENIX_HOME/phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-server.jar $HBASE_HOME/lib/phoenix-server.jar
 
 # Kerberos client
-RUN yum install krb5-libs krb5-workstation krb5-auth-dialog -y
+RUN yum install krpb5-libs krb5-workstation krb5-auth-dialog -y
+RUN mkdir -p /var/log/kerberos
+RUN touch /var/log/kerberos/kadmind.log
 
 # Kerberos HBase
-COPY zk-jaas.conf $HBASE_HOME/conf/zk-jaas.conf
+COPY hbase-server.jaas $HBASE_HOME/conf/hbase-server.jaas
+COPY hbase-client.jaas $HBASE_HOME/conf/hbase-client.jaas
 COPY hbase-env.sh $HBASE_HOME/conf/hbase-env.sh
+RUN mkdir -p /apps/hbase/staging && chmod 711 /apps/hbase/staging
 
 # Kerberos Phoenix
 RUN ln -sf $HBASE_HOME/conf/hbase-site.xml $PHOENIX_HOME/bin/hbase-site.xml
-RUN ln -sf /usr/local/hadoop-2.7.0/etc/hadoop/core-site.xml $PHOENIX_HOME/bin/core-site.xml
-RUN ln -sf /usr/local/hadoop-2.7.0/etc/hadoop/hdfs-site.xml $PHOENIX_HOME/bin/hdfs-site.xml
+RUN ln -sf /usr/local/hadoop/etc/hadoop/core-site.xml $PHOENIX_HOME/bin/core-site.xml
+RUN ln -sf /usr/local/hadoop/etc/hadoop/hdfs-site.xml $PHOENIX_HOME/bin/hdfs-site.xml
 
 # Kerberos Zookeeper
-COPY jaas.conf $ZOO_HOME/conf/jaas.conf
-COPY java.env $ZOO_HOME/conf/java.env
-COPY zoo.cfg $ZOO_HOME-$ZOOKEEPER_VERSION/conf/zoo.cfg
+COPY zookeeper-server.jaas $ZOO_HOME/conf/zookeeper-server.jaas
+COPY zookeeper-client.jaas $ZOO_HOME/conf/zookeeper-client.jaas
+COPY zookeeper-env.sh $ZOO_HOME/conf/zookeeper-env.sh
+COPY zoo.cfg $ZOO_HOME/conf/zoo.cfg
 
+# hadoop env variables
+ENV HADOOP_PREFIX /usr/local/hadoop
+ENV HADOOP_BIN_HOME $HADOOP_PREFIX/bin
+ENV NM_CONTAINER_EXECUTOR_PATH $HADOOP_PREFIX/bin/container-executor
 # default environment variables
 ENV KRB_REALM EXAMPLE.COM
 ENV DOMAIN_REALM example.com
 ENV KERBEROS_ADMIN admin/admin
 ENV KERBEROS_ADMIN_PASSWORD admin
-ENV HBASE_KEYTAB_FILE /etc/security/keytabs/hbase.keytab
-ENV ZOOKEEPER_KEYTAB_FILE /etc/security/keytabs/zookeeper.keytab
+ENV KERBEROS_ROOT_USER_PASSWORD password
+ENV KEYTAB_DIR /etc/security/keytabs
+ENV HBASE_KEYTAB_FILE $KEYTAB_DIR/hbase.keytab
+ENV ZOOKEEPER_KEYTAB_FILE $KEYTAB_DIR/zookeeper.keytab
+ENV PATH $PATH:$HADOOP_BIN_HOME
+ENV FQDN hadoop.com
 
 # bootstrap phoenix
 ADD bootstrap-phoenix.sh /etc/bootstrap-phoenix.sh
@@ -65,4 +78,4 @@ RUN chmod 700 /etc/bootstrap-phoenix.sh
 ENTRYPOINT ["/etc/bootstrap-phoenix.sh"]
 CMD ["-d"]
 
-EXPOSE 8765
+EXPOSE 8765 2181
