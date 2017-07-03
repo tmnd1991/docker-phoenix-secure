@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 export JAVA_HOME=${JAVA_HOME}
-export ZOO_LOG_DIR=${LOG_DIR}
+export ZOO_LOG_DIR="/usr/local/zookeeper/logs"
 
 export SERVER_JVMFLAGS="-Djava.security.auth.login.config=/usr/local/zookeeper/conf/zookeeper-server.jaas"
 export CLIENT_JVMFLAGS="-Djava.security.auth.login.config=/usr/local/zookeeper/conf/zookeeper-client.jaas"

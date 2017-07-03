@@ -4,5 +4,5 @@ Client {
       storeKey=true
       useTicketCache=false
       keyTab="/etc/security/keytabs/hbase.keytab"
-      principal="hbase/fully.qualified.domain.name@EXAMPLE.COM";
+      principal="hbase/fully.qualified.domain.name";
    };

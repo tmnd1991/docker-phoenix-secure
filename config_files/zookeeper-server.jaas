@@ -4,5 +4,5 @@ Server {
     storeKey=true
     useTicketCache=false
     keyTab="/etc/security/keytabs/zookeeper.keytab"
-    principal="zookeeper/fully.qualified.domain.name@EXAMPLE.COM";
+    principal="zookeeper/fully.qualified.domain.name";
 };
