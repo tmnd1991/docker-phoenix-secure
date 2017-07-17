@@ -23,11 +23,11 @@
 <configuration>
   <property>
     <name>hbase.rootdir</name>
-    <value>hdfs://localhost:9000/hbase</value>
+    <value>hdfs://HOSTNAME:9000/hbase</value>
   </property>
   <property>
     <name>hbase.zookeeper.quorum</name>
-    <value>localhost</value>
+    <value>HOSTNAME</value>
   </property>
   <property>
     <name>hbase.zookeeper.property.clientPort</name>

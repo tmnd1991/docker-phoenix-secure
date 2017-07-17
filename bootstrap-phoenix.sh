@@ -67,16 +67,22 @@ chmod 400 ${KEYTAB_DIR}/nm.service.keytab
 
 # hbase kerberos
 sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" $HBASE_HOME/conf/hbase-site.xml
+sed -i "s/HOSTNAME/${FQDN}/g" $HBASE_HOME/conf/hbase-site.xml
 sed -i "s#/etc/security/keytabs/hbase.keytab#${HBASE_KEYTAB_FILE}#g" $HBASE_HOME/conf/hbase-site.xml
 sed -i "s/fully.qualified.domain.name/$(hostname -f)/g" $HBASE_HOME/conf/hbase-server.jaas
+sed -i "s/fully.qualified.domain.name/$(hostname -f)/g" $HBASE_HOME/conf/hbase-client.jaas
 sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" $HBASE_HOME/conf/hbase-server.jaas
+sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" $HBASE_HOME/conf/hbase-client.jaas
 sed -i "s#/etc/security/keytabs/hbase.keytab#${HBASE_KEYTAB_FILE}#g" $ZOO_HOME/conf/hbase-server.jaas
+sed -i "s#/etc/security/keytabs/hbase.keytab#${HBASE_KEYTAB_FILE}#g" $ZOO_HOME/conf/hbase-client.jaas
 sed -i "s#/etc/hbase/conf/hbase-env.sh#${HBASE_HOME}/conf/hbase-env.sh#g" $HBASE_HOME/conf/hbase-env.sh
 
 # zookeeper kerberos
 sed -i "s/fully.qualified.domain.name/$(hostname -f)/g" $ZOO_HOME/conf/zookeeper-server.jaas
-sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" $ZOO_HOME/conf/zookeeper-server.jaas
+sed -i "s/fully.qualified.domain.name/$(hostname -f)/g" $ZOO_HOME/conf/zookeeper-client.jaas
+sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" $ZOO_HOME/conf/zookeeper-client.jaas
 sed -i "s#/etc/security/keytabs/zookeeper.keytab#${ZOOKEEPER_KEYTAB_FILE}#g" $ZOO_HOME/conf/zookeeper-server.jaas
+sed -i "s#/etc/security/keytabs/zookeeper.keytab#${ZOOKEEPER_KEYTAB_FILE}#g" $ZOO_HOME/conf/zookeeper-client.jaas
 
 # create hbase kerberos principal and keytab
 kadmin -p ${KERBEROS_ADMIN} -w ${KERBEROS_ADMIN_PASSWORD} -q "addprinc -randkey hbase/$(hostname -f)@${KRB_REALM}"
@@ -99,6 +105,12 @@ $HADOOP_PREFIX/sbin/start-dfs.sh
 $HADOOP_PREFIX/sbin/start-yarn.sh
 $HADOOP_PREFIX/sbin/mr-jobhistory-daemon.sh start historyserver
 $ZOO_HOME/bin/zkServer.sh start
+
+adduser hbase
+addgroup hadoop
+usermod -a -G hadoop hbase
+hdfs dfs -mkdir /hbase
+hdfs dfs -chown -R hbase:hadoop /hbase
 $HBASE_HOME/bin/start-hbase.sh
 
 if [[ $1 == "-d" ]]; then
