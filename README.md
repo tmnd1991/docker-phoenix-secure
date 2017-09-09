@@ -1,5 +1,10 @@
 # STILL IN DEVELOPMENT - NOT YET WORKING !!!
 
+next steps:
+-----------
+
+* document how to connect with phoenix and hbase
+
 docker-phoenix-secure
 =====================
 

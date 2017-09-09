@@ -12,6 +12,7 @@ sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" /etc/krb5.conf
 sed -i "s/example.com/${DOMAIN_REALM}/g" /etc/krb5.conf
 
 # update config files
+sed -i "s/9000/8020/g" $HADOOP_PREFIX/etc/hadoop/core-site.xml
 sed -i "s/HOSTNAME/${FQDN}/g" $HADOOP_PREFIX/etc/hadoop/core-site.xml
 sed -i "s/EXAMPLE.COM/${KRB_REALM}/g" $HADOOP_PREFIX/etc/hadoop/core-site.xml
 sed -i "s#/etc/security/keytabs#${KEYTAB_DIR}#g" $HADOOP_PREFIX/etc/hadoop/core-site.xml
@@ -106,8 +107,9 @@ $HADOOP_PREFIX/sbin/start-yarn.sh
 $HADOOP_PREFIX/sbin/mr-jobhistory-daemon.sh start historyserver
 $ZOO_HOME/bin/zkServer.sh start
 
+printf "password" | kinit root@EXAMPLE.COM
 adduser hbase
-addgroup hadoop
+groupadd hadoop
 usermod -a -G hadoop hbase
 hdfs dfs -mkdir /hbase
 hdfs dfs -chown -R hbase:hadoop /hbase

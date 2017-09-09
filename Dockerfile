@@ -1,4 +1,4 @@
-FROM knappek/hadoop-secure:2.7.1
+FROM knappek/hadoop-secure
 MAINTAINER knappek
 
 # zookeeper
@@ -11,8 +11,8 @@ ENV PATH $PATH:$ZOO_HOME/bin
 RUN mkdir /tmp/zookeeper
 
 # hbase
-ENV HBASE_MAJOR 1.1
-ENV HBASE_MINOR 8
+ENV HBASE_MAJOR 1.3
+ENV HBASE_MINOR 1
 ENV HBASE_VERSION "${HBASE_MAJOR}.${HBASE_MINOR}"
 COPY local_files/hbase-$HBASE_VERSION-bin.tar.gz /usr/local/hbase-$HBASE_VERSION-bin.tar.gz
 RUN tar -xzvf /usr/local/hbase-$HBASE_VERSION-bin.tar.gz -C /usr/local
@@ -24,13 +24,13 @@ COPY config_files/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
 
 # phoenix
 ENV PHOENIX_VERSION 4.9.0
-COPY local_files/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz /usr/local/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz
-RUN tar -xzvf /usr/local/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz -C /usr/local
-RUN cd /usr/local && ln -s ./apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin phoenix
-ENV PHOENIX_HOME /usr/local/phoenix
-ENV PATH $PATH:$PHOENIX_HOME/bin
-RUN cp $PHOENIX_HOME/phoenix-core-$PHOENIX_VERSION-HBase-$HBASE_MAJOR.jar $HBASE_HOME/lib/phoenix.jar
-RUN cp $PHOENIX_HOME/phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-server.jar $HBASE_HOME/lib/phoenix-server.jar
+#COPY local_files/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz /usr/local/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz
+#RUN tar -xzvf /usr/local/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz -C /usr/local
+#RUN cd /usr/local && ln -s ./apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin phoenix
+#ENV PHOENIX_HOME /usr/local/phoenix
+#ENV PATH $PATH:$PHOENIX_HOME/bin
+#RUN cp $PHOENIX_HOME/phoenix-core-$PHOENIX_VERSION-HBase-$HBASE_MAJOR.jar $HBASE_HOME/lib/phoenix.jar
+#RUN cp $PHOENIX_HOME/phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-server.jar $HBASE_HOME/lib/phoenix-server.jar
 
 # Kerberos client
 RUN yum install krpb5-libs krb5-workstation krb5-auth-dialog -y

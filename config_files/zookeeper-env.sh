@@ -16,4 +16,4 @@ export JAVA_HOME=${JAVA_HOME}
 export ZOO_LOG_DIR="/usr/local/zookeeper/logs"
 
 export SERVER_JVMFLAGS="-Djava.security.auth.login.config=/usr/local/zookeeper/conf/zookeeper-server.jaas"
-export CLIENT_JVMFLAGS="-Djava.security.auth.login.config=/usr/local/zookeeper/conf/zookeeper-client.jaas"
+export CLIENT_JVMFLAGS="-Djava.security.auth.login.config=/usr/local/zookeeper/conf/zookeeper-client.jaas -Dsun.net.spi.nameservice.provider.1=dns,sun"

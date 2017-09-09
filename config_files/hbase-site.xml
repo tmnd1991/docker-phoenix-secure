@@ -23,7 +23,7 @@
 <configuration>
   <property>
     <name>hbase.rootdir</name>
-    <value>hdfs://HOSTNAME:9000/hbase</value>
+    <value>hdfs://HOSTNAME/hbase/data</value>
   </property>
   <property>
     <name>hbase.zookeeper.quorum</name>
@@ -62,10 +62,6 @@
     <value>kerberos</value>
   </property>
   <property>
-    <name>hbase.rpc.engine</name>
-    <value>org.apache.hadoop.hbase.ipc.SecureRpcEngine</value>
-  </property>
-  <property>
     <name>hbase.security.authorization</name>
     <value>false</value>
   </property>
@@ -75,7 +71,7 @@
   </property>
   <property>
     <name>hbase.bulkload.staging.dir</name>
-    <value>/apps/hbase/staging</value>
+    <value>/hbase/staging</value>
     <description>Directory in the default filesystem, owned by the hbase user, and has permissions(-rwx--x--x, 711)</description>
   </property>
   <property>
@@ -97,5 +93,10 @@
     <description>Full path to the Kerberos keytab file to use for logging
     in the configured Phoenix Query Server service principal.
     </description>
+  </property>
+  
+  <property>
+    <name>zookeeper.znode.parent</name>
+    <value>/hbase-secure</value>
   </property>
 </configuration>
