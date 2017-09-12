@@ -3,7 +3,7 @@
 next steps:
 -----------
 
-* document how to connect with phoenix and hbase
+* use hadoop-secure 2.7.4
 
 docker-phoenix-secure
 =====================
@@ -31,7 +31,13 @@ Apache Phoenix - 4.9.0
 * Download Phoenix: http://apache.mirror.vexxhost.com/phoenix/apache-phoenix-4.9.0-HBase-1.1/bin/apache-phoenix-4.9.0-HBase-1.1-bin.tar.gz
 
 ### Build
-`docker build -t Knappek/phoenix-secure .`
+`docker build -t knappek/phoenix-secure .`
 
 ### launch
 `docker run -dit --name phoenix -e KRB_REALM=YOUR_REALM knappek/phoenix-secure -d`
+
+### Start HBase Shell
+`hbase shell`
+
+### Start Phoenix
+`/usr/local/phoenix/bin/sqlline.py localhost`
