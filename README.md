@@ -36,8 +36,17 @@ Apache Phoenix - 4.9.0
 ### launch
 `docker run -dit --name phoenix -e KRB_REALM=YOUR_REALM knappek/phoenix-secure -d`
 
+
 ### Start HBase Shell
+
 `hbase shell`
 
+
 ### Start Phoenix
+
 `/usr/local/phoenix/bin/sqlline.py localhost`
+
+
+### Use Phoenix
+
+https://phoenix.apache.org/faq.html
