@@ -10,11 +10,15 @@ MIT Kerberos is the authentication system of Hadoop that is widely used in produ
 This image is very useful for Hadoop engineers that work with Apache Phoenix and HBase who want to have a real world scenario with highly secured Hadoop clusters in order to test their code locally to prevent the need of deploying it to remote servers.
 
 
-### Versions
+Versions
+--------
 Apache Hadoop - 2.7.4
 Apache Zookeeper - 3.4.6
 Apache HBase - 1.3.1
 Apache Phoenix - 4.11.0
+
+Default Variables
+----------------
 
 
 Run image
@@ -40,16 +44,24 @@ Usage instructions
 
 Login to the Phoenix container with
 
-`docker exec -it <container-name> /bin/bash`
+```
+docker exec -it <container-name> /bin/bash
+```
+
+Check whether you have a valid Kerberos ticket with `klist` and create one with `kinit` by entering the password afterwards, default is `password`.
 
 ### Start HBase Shell
 
-`hbase shell`
+```
+hbase shell
+```
 
 
 ### Start Phoenix
 
-`/usr/local/phoenix/bin/sqlline.py localhost`
+```
+/usr/local/phoenix/bin/sqlline.py localhost
+```
 
 
 ### Use Phoenix
