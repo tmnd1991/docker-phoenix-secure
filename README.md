@@ -1,10 +1,3 @@
-# STILL IN DEVELOPMENT - NOT YET WORKING !!!
-
-next steps:
------------
-
-* use hadoop-secure 2.7.4
-
 docker-phoenix-secure
 =====================
 
