@@ -1,3 +1,10 @@
+STILL IN DEVELOPMENT!!!
+-----------------------
+
+## next steps
+* download zookeeper and hbase
+
+
 docker-phoenix-secure
 =====================
 
