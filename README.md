@@ -9,6 +9,7 @@ MIT Kerberos is the authentication system of Hadoop that is widely used in produ
 
 This image is very useful for Hadoop engineers that work with Apache Phoenix and HBase who want to have a real world scenario with highly secured Hadoop clusters in order to test their code locally to prevent the need of deploying it to remote servers.
 
+The Docker image is also available on [Docker Hub](https://hub.docker.com/r/knappek/phoenix-secure/).
 
 Versions
 --------
