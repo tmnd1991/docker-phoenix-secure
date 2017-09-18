@@ -18,9 +18,18 @@ Versions
 * Apache HBase - 1.3.1
 * Apache Phoenix - 4.11.0
 
-Default Variables
-----------------
+Default Environment Variables
+-----------------------------
 
+| Name | Value | Description |
+| ---- | ----  | ---- |
+| `KRB_REALM` | `EXAMPLE.COM` | The Kerberos Realm, more information [here](https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html#) |
+| `DOMAIN_REALM` | `example.com` | The Kerberos Domain Realm, more information [here](https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html#) |
+| `KERBEROS_ADMIN` | `admin/admin` | The KDC admin user |
+| `KERBEROS_ADMIN_PASSWORD` | `admin` | The KDC admin password |
+| `KERBEROS_ROOT_USER_PASSWORD` | `password` | The password of the Kerberos principal `root` which maps to the OS root user |
+
+You can simply define these variables in the `docker-compose.yml`.
 
 Run image
 ---------
