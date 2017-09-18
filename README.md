@@ -77,7 +77,8 @@ Known issues
 ### Unable to obtain Kerberos password
 
 #### Error
-docker-compose up fails for the first time with the error
+
+`docker-compose up` fails for the first time with the error
 
 ```
 Login failure for nn/hadoop.docker.com@EXAMPLE.COM from keytab /etc/security/keytabs/nn.service.keytab: javax.security.auth.login.LoginException: Unable to obtain password from user
