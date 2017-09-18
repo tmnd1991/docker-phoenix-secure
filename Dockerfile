@@ -2,9 +2,10 @@ FROM knappek/hadoop-secure:2.7.4
 MAINTAINER knappek
 
 # zookeeper
-ENV ZOOKEEPER_VERSION 3.4.6
-COPY local_files/zookeeper-$ZOOKEEPER_VERSION.tar.gz /usr/local/zookeeper-$ZOOKEEPER_VERSION.tar.gz
-RUN tar -xzvf /usr/local/zookeeper-$ZOOKEEPER_VERSION.tar.gz -C /usr/local/
+ENV ZOOKEEPER_VERSION 3.4.10
+RUN curl -s http://mirror.csclub.uwaterloo.ca/apache/zookeeper/zookeeper-$ZOOKEEPER_VERSION/zookeeper-$ZOOKEEPER_VERSION.tar.gz | tar -xz -C /usr/local/
+#COPY local_files/zookeeper-$ZOOKEEPER_VERSION.tar.gz /usr/local/zookeeper-$ZOOKEEPER_VERSION.tar.gz
+#RUN tar -xzvf /usr/local/zookeeper-$ZOOKEEPER_VERSION.tar.gz -C /usr/local/
 RUN cd /usr/local && ln -s ./zookeeper-$ZOOKEEPER_VERSION zookeeper
 ENV ZOO_HOME /usr/local/zookeeper
 ENV PATH $PATH:$ZOO_HOME/bin
@@ -14,8 +15,9 @@ RUN mkdir /tmp/zookeeper
 ENV HBASE_MAJOR 1.3
 ENV HBASE_MINOR 1
 ENV HBASE_VERSION "${HBASE_MAJOR}.${HBASE_MINOR}"
-COPY local_files/hbase-$HBASE_VERSION-bin.tar.gz /usr/local/hbase-$HBASE_VERSION-bin.tar.gz
-RUN tar -xzvf /usr/local/hbase-$HBASE_VERSION-bin.tar.gz -C /usr/local
+RUN curl -s http://apache.mirror.gtcomm.net/hbase/$HBASE_MAJOR.$HBASE_MINOR/hbase-$HBASE_MAJOR.$HBASE_MINOR-bin.tar.gz | tar -xz -C /usr/local/
+#COPY local_files/hbase-$HBASE_VERSION-bin.tar.gz /usr/local/hbase-$HBASE_VERSION-bin.tar.gz
+#RUN tar -xzvf /usr/local/hbase-$HBASE_VERSION-bin.tar.gz -C /usr/local
 RUN cd /usr/local && ln -s ./hbase-$HBASE_VERSION hbase
 ENV HBASE_HOME /usr/local/hbase
 ENV PATH $PATH:$HBASE_HOME/bin
@@ -25,7 +27,7 @@ COPY config_files/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
 # phoenix
 RUN yum install python-argparse.noarch -y
 ENV PHOENIX_VERSION 4.11.0
-RUN curl -s http://apache.mirror.vexxhost.com/phoenix/phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR/bin/phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz | tar -xz -C /usr/local/
+RUN curl -s http://apache.mirror.vexxhost.com/phoenix/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR/bin/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz | tar -xz -C /usr/local/
 #COPY local_files/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz /usr/local/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz
 #RUN tar -xzvf /usr/local/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz -C /usr/local
 RUN cd /usr/local && ln -s ./apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin phoenix

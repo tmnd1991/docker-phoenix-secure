@@ -1,10 +1,3 @@
-STILL IN DEVELOPMENT!!!
------------------------
-
-## next steps
-* download zookeeper and hbase
-
-
 docker-phoenix-secure
 =====================
 
@@ -20,7 +13,7 @@ This image is very useful for Hadoop engineers that work with Apache Phoenix and
 Versions
 --------
 Apache Hadoop - 2.7.4
-Apache Zookeeper - 3.4.6
+Apache Zookeeper - 3.4.10
 Apache HBase - 1.3.1
 Apache Phoenix - 4.11.0
 
@@ -74,3 +67,21 @@ hbase shell
 ### Use Phoenix
 
 https://phoenix.apache.org/faq.html
+
+
+Known issues
+------------
+
+### Unable to obtain Kerberos password
+
+#### Error
+docker-compose up fails for the first time with the error
+
+```
+Login failure for nn/hadoop.docker.com@EXAMPLE.COM from keytab /etc/security/keytabs/nn.service.keytab: javax.security.auth.login.LoginException: Unable to obtain password from user
+```
+
+#### Solution
+
+Stop the containers with `docker-compose down` and start again with `docker-compose up -d`.
+

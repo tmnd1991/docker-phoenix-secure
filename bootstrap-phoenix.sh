@@ -107,12 +107,13 @@ $HADOOP_PREFIX/sbin/start-yarn.sh
 $HADOOP_PREFIX/sbin/mr-jobhistory-daemon.sh start historyserver
 $ZOO_HOME/bin/zkServer.sh start
 
-printf "password" | kinit root@EXAMPLE.COM
+printf "${KERBEROS_ROOT_USER_PASSWORD}" | kinit root@${KRB_REALM}
 adduser hbase
 groupadd hadoop
 usermod -a -G hadoop hbase
 hdfs dfs -mkdir /hbase
 hdfs dfs -chown -R hbase:hadoop /hbase
+kdestroy
 $HBASE_HOME/bin/start-hbase.sh
 
 if [[ $1 == "-d" ]]; then
