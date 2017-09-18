@@ -13,10 +13,10 @@ The Docker image is also available on [Docker Hub](https://hub.docker.com/r/knap
 
 Versions
 --------
-Apache Hadoop - 2.7.4
-Apache Zookeeper - 3.4.10
-Apache HBase - 1.3.1
-Apache Phoenix - 4.11.0
+* Apache Hadoop - 2.7.4
+* Apache Zookeeper - 3.4.10
+* Apache HBase - 1.3.1
+* Apache Phoenix - 4.11.0
 
 Default Variables
 ----------------
