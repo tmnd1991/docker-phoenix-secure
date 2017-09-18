@@ -34,7 +34,9 @@ docker-compose up -d
 
 You can also build the Docker image locally with
 
-`docker build -t knappek/phoenix-secure .`
+```
+docker build -t knappek/phoenix-secure .
+```
 
 
 Usage instructions
