@@ -1,5 +1,4 @@
-docker-phoenix-secure
-=====================
+# Apache Phoenix Docker image on kerberized Hadoop
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/knappek/phoenix-secure.svg)](https://hub.docker.com/r/knappek/phoenix-secure)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
