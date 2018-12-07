@@ -13,7 +13,7 @@ RUN mkdir /tmp/zookeeper
 
 # hbase
 ENV HBASE_MAJOR 1.3
-ENV HBASE_MINOR 1
+ENV HBASE_MINOR 2.1
 ENV HBASE_VERSION "${HBASE_MAJOR}.${HBASE_MINOR}"
 RUN curl -s http://apache.mirror.gtcomm.net/hbase/$HBASE_MAJOR.$HBASE_MINOR/hbase-$HBASE_MAJOR.$HBASE_MINOR-bin.tar.gz | tar -xz -C /usr/local/
 #COPY local_files/hbase-$HBASE_VERSION-bin.tar.gz /usr/local/hbase-$HBASE_VERSION-bin.tar.gz
@@ -26,7 +26,7 @@ COPY config_files/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
 
 # phoenix
 RUN yum install python-argparse.noarch -y
-ENV PHOENIX_VERSION 4.11.0
+ENV PHOENIX_VERSION 4.14.1
 RUN curl -s http://apache.mirror.vexxhost.com/phoenix/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR/bin/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz | tar -xz -C /usr/local/
 #COPY local_files/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz /usr/local/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz
 #RUN tar -xzvf /usr/local/apache-phoenix-$PHOENIX_VERSION-HBase-$HBASE_MAJOR-bin.tar.gz -C /usr/local

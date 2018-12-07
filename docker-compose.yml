@@ -14,7 +14,7 @@ services:
     networks:
       custom:
         ipv4_address: 172.21.0.2
-    image: sequenceiq/kerberos
+    image: sequenceiq/docker-kerberos
     hostname: kdc.kerberos.com
     environment:
       REALM: EXAMPLE.COM
@@ -22,7 +22,7 @@ services:
     volumes:
       - "./config_files/krb5.conf:/etc/krb5.conf"
       - "/dev/urandom:/dev/random"
-      - "/etc/localtime:/etc/localtime:ro"
+      - "/var/db/timezone/zoneinfo/Europe/Rome:/etc/localtime:ro"
 
   phoenix-secure:
     networks:
@@ -42,4 +42,4 @@ services:
       FQDN: phoenix.docker.com
     volumes:
       - "./config_files/krb5.conf:/etc/krb5.conf"
-      - "/etc/localtime:/etc/localtime:ro"
+      - "/var/db/timezone/zoneinfo/Europe/Rome:/etc/localtime:ro"
